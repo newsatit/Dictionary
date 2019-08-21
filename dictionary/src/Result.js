@@ -1,10 +1,25 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
+import WordCard from './WordCard'
 
 class Result extends Component {
     render() {
-        // const { definitions, suggestions } = this.props
-        return <p>The word is </p>
+        const { definitions, suggestions } = this.props
+
+        const WordCards = definitions.length === 0 ? (
+            <div>No definition found</div>
+            ) : (
+            <div>
+            {
+                definitions.map((def, index) => <WordCard key={index} word={def.word} shortdef={def.shortdef}/>)
+            }                
+            </div>)
+
+        return (
+            <div>
+                {WordCards}
+            </div>
+        )
     }
 }
 
-export default Result;
+export default Result
