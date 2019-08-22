@@ -8,7 +8,7 @@ class Result extends Component {
         const WordCards = definitions.length === 0 ? (
             <div >No definition found</div>
             ) : (
-            <div style={{width: "18rem"}}>
+            <div style={{width: "30rem"}}>
             {
                 definitions.map((def, index) => <WordCard key={index} word={def.word} shortdef={def.shortdef} fl={def.fl}/>)
             }                

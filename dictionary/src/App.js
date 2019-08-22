@@ -10,7 +10,8 @@ class App extends Component {
       searchInput: "",
       definitions: [],
       suggestions: [],
-      showResult: false
+      showResult: false,
+      isLoading: false
     }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -26,6 +27,9 @@ class App extends Component {
     const word = this.state.searchInput.trim();
     const base = 'https://www.dictionaryapi.com/api/v3/references/collegiate/json'
     const url = base + '/' + word + '?key=8ff43ecf-f2dc-453e-8de3-c8a1b17c02b3'
+    this.setState({
+      isLoading: true
+    })
     fetch(url)
       .then((response) => {
         return response.json();
@@ -53,7 +57,8 @@ class App extends Component {
           this.setState({
             definitions: newDefinitions,
             suggestions: newSuggestions,
-            showResult: true
+            showResult: true,
+            isLoading: false
           })
         }
       })
@@ -65,14 +70,19 @@ class App extends Component {
     let result
     if (this.state.showResult) 
       result = <Result definitions={this.state.definitions} suggestions={this.state.suggestions}/> 
+    else if (this.state.isLoading)
+      result = 
+        <div className="text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
     else 
       result = <div></div>
     return (
       <div className="container">
-        <div className="justify-content-md-center">
           <Input searchInput={this.state.searchInput} onChange={this.handleInputChange} onSubmit={this.handleSubmit}/>
           {result}
-        </div>
       </div>
     );    
   }
