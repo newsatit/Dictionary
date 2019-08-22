@@ -37,7 +37,8 @@ class App extends Component {
         try {
           newDefinitions = data.map((def) => ({
             word: def.meta.id,
-            shortdef: def.shortdef
+            shortdef: def.shortdef,
+            fl: def.fl
           }))
           newSuggestions = []
         } catch (error) {

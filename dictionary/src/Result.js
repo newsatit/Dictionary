@@ -10,7 +10,7 @@ class Result extends Component {
             ) : (
             <div style={{width: "18rem"}}>
             {
-                definitions.map((def, index) => <WordCard key={index} word={def.word} shortdef={def.shortdef}/>)
+                definitions.map((def, index) => <WordCard key={index} word={def.word} shortdef={def.shortdef} fl={def.fl}/>)
             }                
             </div>)
 
