@@ -67,11 +67,11 @@ class App extends Component {
     else 
       result = <div></div>
     return (
-      <div className="App">
-        <header className="App-header">
+      <div className="container">
+        <div className="justify-content-md-center">
           <Input searchInput={this.state.searchInput} onChange={this.handleInputChange} onSubmit={this.handleSubmit}/>
           {result}
-        </header>
+        </div>
       </div>
     );    
   }

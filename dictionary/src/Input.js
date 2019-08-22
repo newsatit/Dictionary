@@ -5,9 +5,12 @@ class Input extends Component {
         const { onChange, onSubmit, searchInput } = this.props;
         return (
             <div>
-                <form onSubmit={onSubmit}>
-                    <input type="text" name="word" onChange={onChange} value={searchInput}/>
-                    <input type="submit" value="Submit" />
+                <form className="form-inline" onSubmit={onSubmit}>
+                    <div className="form-group mx-sm-3 mb-2">
+                        <label className="sr-only">Words to search</label>
+                        <input type="text" className="form-control" onChange={onChange} value={searchInput} />
+                    </div>
+                    <button type="submit" className="btn btn-primary mb-2">Search</button>
                 </form>
             </div>
         );
