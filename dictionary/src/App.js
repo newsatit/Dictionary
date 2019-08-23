@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
-import Result from './Result'
-import Input from './Input'
+import Result from './Result/Result'
+import Input from './Input/Input'
 
 class App extends Component {
   constructor(props) {
