@@ -11,7 +11,7 @@ class App extends Component {
       definitions: [],
       suggestions: [],
       showResult: false,
-      isLoading: false
+      isLoadingDef: false
     }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -28,15 +28,14 @@ class App extends Component {
     const base = 'https://www.dictionaryapi.com/api/v3/references/collegiate/json'
     const url = base + '/' + word + '?key=8ff43ecf-f2dc-453e-8de3-c8a1b17c02b3'
     this.setState({
-      isLoading: true
+      isLoadingDef: true,
+      showResult: true
     }, () => {
       fetch(url)
         .then((response) => {
           return response.json();
         })
         .then((data) => {
-          console.log('data')
-          console.log(data)
           let newDefinitions, newSuggestions
           try {
             newDefinitions = data.map((def) => ({
@@ -50,15 +49,10 @@ class App extends Component {
             newDefinitions = []
             newSuggestions = data
           } finally {
-            console.log('definitions')
-            console.log(newDefinitions)
-            console.log('suggestions')
-            console.log(newSuggestions)
             this.setState({
               definitions: newDefinitions,
               suggestions: newSuggestions,
-              showResult: true,
-              isLoading: false
+              isLoadingDef: false
             })
           }
         })
@@ -68,24 +62,12 @@ class App extends Component {
   }
 
   render() {
-    console.log('isLoading: ', this.state.isLoading)
-    let result
-    if (this.state.isLoading)
-      result = 
-        <div className="text-center">
-          <div className="spinner-border text-primary" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>    
-    else if (this.state.showResult) 
-      result = <Result definitions={this.state.definitions} suggestions={this.state.suggestions}/> 
-    else 
-      result = <div></div>
+    const {definitions, suggestions, isLoadingDef, showResult} = this.state
 
     return (
       <div className="container  my-sm-5">
           <Input searchInput={this.state.searchInput} onChange={this.handleInputChange} onSubmit={this.handleSubmit}/>
-          {result}
+          { showResult ? <Result definitions={definitions} suggestions={suggestions} isLoadingDef={isLoadingDef}/> : <div></div> }
       </div>
     );    
   }

@@ -3,9 +3,18 @@ import WordCard from './WordCard'
 
 class Result extends Component {
     render() {
-        const { definitions, suggestions } = this.props
-
-        const WordCards = definitions.length === 0 ? (
+        const { definitions, suggestions, isLoadingDef } = this.props
+        console.log('isLoadingDef: ', isLoadingDef)
+        const WordCards = isLoadingDef ? (
+            <div className="text-center">
+                <div className="text-primary" role="status">
+                    <span>Loading Definition</span>
+                </div>
+                <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>  
+        ) : definitions.length === 0 ? (
             <div className="alert alert-warning" role="alert">
                 <strong>Sorry!</strong> No definition found.
             </div>
@@ -14,12 +23,16 @@ class Result extends Component {
             {
                 definitions.map((def, index) => <WordCard key={index} word={def.word} shortdef={def.shortdef} fl={def.fl}/>)
             }                
-            </div>)
-
-        return (
-            <div style={{width: "30rem"}}>
-                {WordCards}
             </div>
+            ) 
+  
+        return (
+            <div>
+                <div style={{width: "30rem"}}>
+                    {WordCards}
+                </div>                
+            </div>
+
         )
     }
 }
