@@ -6,16 +6,18 @@ class Result extends Component {
         const { definitions, suggestions } = this.props
 
         const WordCards = definitions.length === 0 ? (
-            <div >No definition found</div>
+            <div className="alert alert-warning" role="alert">
+                <strong>Sorry!</strong> No definition found.
+            </div>
             ) : (
-            <div style={{width: "30rem"}}>
+            <div>
             {
                 definitions.map((def, index) => <WordCard key={index} word={def.word} shortdef={def.shortdef} fl={def.fl}/>)
             }                
             </div>)
 
         return (
-            <div>
+            <div style={{width: "30rem"}}>
                 {WordCards}
             </div>
         )
