@@ -1,6 +1,6 @@
 import React from 'react'
 
-const WordCard = ({index, word, shortdef, fl}) => (
+const WordCard = ({word, shortdef, fl}) => (
     <div key={word} className="card">
         <div className="card-body">
             <h5 className="card-title">{word}</h5>

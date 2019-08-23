@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
-import Result from './Result'
-import Input from './Input'
+import Result from './Result/Result'
+import Input from './Input/Input'
 
 class App extends Component {
   constructor(props) {
@@ -10,8 +10,10 @@ class App extends Component {
       searchInput: "",
       definitions: [],
       suggestions: [],
+      images: [],
       showResult: false,
-      isLoading: false
+      isLoadingDef: false,
+      isLoadingImg: false
     }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -24,19 +26,29 @@ class App extends Component {
   }
 
   handleSubmit(event) {   
+    const apiKey = 'AIzaSyASaXpNoYuHyKdG2tzEeJGyiOi1phs_B2s'
+    const engineId = '006440095621558188841:oyunba398sc'
+
     const word = this.state.searchInput.trim();
-    const base = 'https://www.dictionaryapi.com/api/v3/references/collegiate/json'
-    const url = base + '/' + word + '?key=8ff43ecf-f2dc-453e-8de3-c8a1b17c02b3'
+    const defBase = 'https://www.dictionaryapi.com/api/v3/references/collegiate/json'
+    const defUrl = defBase + '/' + word + '?key=8ff43ecf-f2dc-453e-8de3-c8a1b17c02b3'
+    const imgBase = 'https://www.googleapis.com/customsearch/v1'
+    const imgUrl = imgBase + '?' 
+      + 'q=' + word + '&'
+      + 'key=' + apiKey + '&'
+      + 'cx=' + engineId + '&'
+      + 'searchType=image&'
+      + 'imgSize=medium' 
     this.setState({
-      isLoading: true
+      isLoadingDef: true,
+      isLoadingImg: true,
+      showResult: true
     }, () => {
-      fetch(url)
+      fetch(defUrl)
         .then((response) => {
           return response.json();
         })
         .then((data) => {
-          console.log('data')
-          console.log(data)
           let newDefinitions, newSuggestions
           try {
             newDefinitions = data.map((def) => ({
@@ -50,42 +62,46 @@ class App extends Component {
             newDefinitions = []
             newSuggestions = data
           } finally {
-            console.log('definitions')
-            console.log(newDefinitions)
-            console.log('suggestions')
-            console.log(newSuggestions)
             this.setState({
               definitions: newDefinitions,
               suggestions: newSuggestions,
-              showResult: true,
-              isLoading: false
+              isLoadingDef: false
+            })
+          }
+        })
+        .catch((error)=> console.log(error)) 
+      
+      fetch(imgUrl)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          let newImages
+          try {
+            newImages = data.items.map((image) => image.image.thumbnailLink)
+          } catch (error) {
+            console.log(error)
+            newImages = []
+          } finally {
+            this.setState({
+              images: newImages,
+              isLoadingImg: false
             })
           }
         })
         .catch((error)=> console.log(error)) 
     })
+    
     event.preventDefault()  
   }
 
   render() {
-    console.log('isLoading: ', this.state.isLoading)
-    let result
-    if (this.state.isLoading)
-      result = 
-        <div className="text-center">
-          <div className="spinner-border text-primary" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>    
-    else if (this.state.showResult) 
-      result = <Result definitions={this.state.definitions} suggestions={this.state.suggestions}/> 
-    else 
-      result = <div></div>
+    const {definitions, suggestions, images, isLoadingDef, isLoadingImg, showResult} = this.state
 
     return (
       <div className="container  my-sm-5">
           <Input searchInput={this.state.searchInput} onChange={this.handleInputChange} onSubmit={this.handleSubmit}/>
-          {result}
+          { showResult ? <Result definitions={definitions} suggestions={suggestions} images={images} isLoadingDef={isLoadingDef} isLoadingImg={isLoadingImg}/> : <div></div> }
       </div>
     );    
   }
