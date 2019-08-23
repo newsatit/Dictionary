@@ -29,56 +29,59 @@ class App extends Component {
     const url = base + '/' + word + '?key=8ff43ecf-f2dc-453e-8de3-c8a1b17c02b3'
     this.setState({
       isLoading: true
+    }, () => {
+      fetch(url)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log('data')
+          console.log(data)
+          let newDefinitions, newSuggestions
+          try {
+            newDefinitions = data.map((def) => ({
+              word: def.meta.id,
+              shortdef: def.shortdef,
+              fl: def.fl
+            }))
+            newSuggestions = []
+          } catch (error) {
+            console.log(error)
+            newDefinitions = []
+            newSuggestions = data
+          } finally {
+            console.log('definitions')
+            console.log(newDefinitions)
+            console.log('suggestions')
+            console.log(newSuggestions)
+            this.setState({
+              definitions: newDefinitions,
+              suggestions: newSuggestions,
+              showResult: true,
+              isLoading: false
+            })
+          }
+        })
+        .catch((error)=> console.log(error)) 
     })
-    fetch(url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        console.log('data')
-        console.log(data)
-        let newDefinitions, newSuggestions
-        try {
-          newDefinitions = data.map((def) => ({
-            word: def.meta.id,
-            shortdef: def.shortdef,
-            fl: def.fl
-          }))
-          newSuggestions = []
-        } catch (error) {
-          console.log(error)
-          newDefinitions = []
-          newSuggestions = data
-        } finally {
-          console.log('definitions')
-          console.log(newDefinitions)
-          console.log('suggestions')
-          console.log(newSuggestions)
-          this.setState({
-            definitions: newDefinitions,
-            suggestions: newSuggestions,
-            showResult: true,
-            isLoading: false
-          })
-        }
-      })
-      .catch((error)=> console.log(error))
-    event.preventDefault()
+    event.preventDefault()  
   }
 
   render() {
+    console.log('isLoading: ', this.state.isLoading)
     let result
-    if (this.state.showResult) 
-      result = <Result definitions={this.state.definitions} suggestions={this.state.suggestions}/> 
-    else if (this.state.isLoading)
+    if (this.state.isLoading)
       result = 
         <div className="text-center">
           <div className="spinner-border text-primary" role="status">
             <span className="sr-only">Loading...</span>
           </div>
-        </div>
+        </div>    
+    else if (this.state.showResult) 
+      result = <Result definitions={this.state.definitions} suggestions={this.state.suggestions}/> 
     else 
       result = <div></div>
+      
     return (
       <div className="container">
           <Input searchInput={this.state.searchInput} onChange={this.handleInputChange} onSubmit={this.handleSubmit}/>
