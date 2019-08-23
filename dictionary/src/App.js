@@ -10,8 +10,10 @@ class App extends Component {
       searchInput: "",
       definitions: [],
       suggestions: [],
+      images: [],
       showResult: false,
-      isLoadingDef: false
+      isLoadingDef: false,
+      isLoadingImg: false
     }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -24,14 +26,25 @@ class App extends Component {
   }
 
   handleSubmit(event) {   
+    const apiKey = 'AIzaSyASaXpNoYuHyKdG2tzEeJGyiOi1phs_B2s'
+    const engineId = '006440095621558188841:oyunba398sc'
+
     const word = this.state.searchInput.trim();
-    const base = 'https://www.dictionaryapi.com/api/v3/references/collegiate/json'
-    const url = base + '/' + word + '?key=8ff43ecf-f2dc-453e-8de3-c8a1b17c02b3'
+    const defBase = 'https://www.dictionaryapi.com/api/v3/references/collegiate/json'
+    const defUrl = defBase + '/' + word + '?key=8ff43ecf-f2dc-453e-8de3-c8a1b17c02b3'
+    const imgBase = 'https://www.googleapis.com/customsearch/v1'
+    const imgUrl = imgBase + '?' 
+      + 'q=' + word + '&'
+      + 'key=' + apiKey + '&'
+      + 'cx=' + engineId + '&'
+      + 'searchType=image&'
+      + 'imgSize=medium' 
     this.setState({
       isLoadingDef: true,
+      isLoadingImg: true,
       showResult: true
     }, () => {
-      fetch(url)
+      fetch(defUrl)
         .then((response) => {
           return response.json();
         })
@@ -57,17 +70,38 @@ class App extends Component {
           }
         })
         .catch((error)=> console.log(error)) 
+      
+      fetch(imgUrl)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          let newImages
+          try {
+            newImages = data.items.map((image) => image.image.thumbnailLink)
+          } catch (error) {
+            console.log(error)
+            newImages = []
+          } finally {
+            this.setState({
+              images: newImages,
+              isLoadingImg: false
+            })
+          }
+        })
+        .catch((error)=> console.log(error)) 
     })
+    
     event.preventDefault()  
   }
 
   render() {
-    const {definitions, suggestions, isLoadingDef, showResult} = this.state
+    const {definitions, suggestions, images, isLoadingDef, isLoadingImg, showResult} = this.state
 
     return (
       <div className="container  my-sm-5">
           <Input searchInput={this.state.searchInput} onChange={this.handleInputChange} onSubmit={this.handleSubmit}/>
-          { showResult ? <Result definitions={definitions} suggestions={suggestions} isLoadingDef={isLoadingDef}/> : <div></div> }
+          { showResult ? <Result definitions={definitions} suggestions={suggestions} images={images} isLoadingDef={isLoadingDef} isLoadingImg={isLoadingImg}/> : <div></div> }
       </div>
     );    
   }

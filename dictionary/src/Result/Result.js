@@ -4,7 +4,7 @@ import ImgCard from './ImageCard'
 
 class Result extends Component {
     render() {
-        const { definitions, suggestions, isLoadingDef } = this.props
+        const { definitions, suggestions, images, isLoadingDef, isLoadingImg } = this.props
 
         const imgUrls = [
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQcqTNwA9nam8XpWhfNzPrB5QJ95UQfyIU3Rumb-bECF6aHaO-iN5EIw",
@@ -34,7 +34,7 @@ class Result extends Component {
             </div>
             ) 
 
-        const imgCards = isLoadingDef ? (
+        const imgCards = isLoadingImg ? (
             <div className="text-center">
                 <div className="text-primary" role="status">
                     <span>Loading Image</span>
@@ -50,7 +50,7 @@ class Result extends Component {
             ) : (
             <div>
             {
-                imgUrls.map((url, index) => <ImgCard key={index} url={url}/>)
+                images.map((url, index) => <ImgCard key={index} url={url}/>)
             }                
             </div>
             ) 
