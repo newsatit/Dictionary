@@ -81,9 +81,9 @@ class App extends Component {
       result = <Result definitions={this.state.definitions} suggestions={this.state.suggestions}/> 
     else 
       result = <div></div>
-      
+
     return (
-      <div className="container">
+      <div className="container  my-sm-5">
           <Input searchInput={this.state.searchInput} onChange={this.handleInputChange} onSubmit={this.handleSubmit}/>
           {result}
       </div>
