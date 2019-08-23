@@ -4,7 +4,7 @@ import ImgCard from './ImageCard'
 
 class Result extends Component {
     render() {
-        const { definitions, suggestions, images, isLoadingDef, isLoadingImg } = this.props
+        const { definitions, images, isLoadingDef, isLoadingImg } = this.props
 
         const imgUrls = [
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQcqTNwA9nam8XpWhfNzPrB5QJ95UQfyIU3Rumb-bECF6aHaO-iN5EIw",
