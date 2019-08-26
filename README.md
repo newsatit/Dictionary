@@ -9,7 +9,10 @@ to run the application locally, run
     
     yarn start 
 
-in the `frontent` directory
+in the `frontent` directory. 
+
+The application will be availble on `http://localhost:3000/`.
+
 
 These are some example screenshots of the application:
 
