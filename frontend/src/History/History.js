@@ -1,36 +1,48 @@
 import React, {Component} from 'react';
-
-const histories = [
-    {
-        "query": "Hello",
-        "created_at": "2020-01-15T09:39:20.089553Z"
-    },
-    {
-        "query": "Elon Musk",
-        "created_at": "2020-01-15T09:41:18.361383Z"
-    },
-    {
-        "query": "determination",
-        "created_at": "2020-01-15T09:43:41.927563Z"
-    },
-    {
-        "query": "Test",
-        "created_at": "2020-01-15T11:14:19.029061Z"
-    }
-]
+import axios from 'axios';
 
 class History extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            histories: histories
+            histories: [],
+            isLoading: false
         };
     }
+
+    componentDidMount() {
+        this.fetchHistories()
+    }
+
+    fetchHistories = () => {
+        this.setState({
+            isLoading: true
+        }, () => {
+            axios.get('/api/histories/').then((res) => {
+                this.setState({
+                    histories: res.data,
+                    isLoading: false
+                })
+            })
+        })
+    }
+
     render() {
+        const { isLoading, histories } = this.state
         return (
-            <ul>
-                { histories.map((history, index) => <li key={index}>{history.query}</li>) }
-            </ul>
+             isLoading ? 
+                <div className="text-center">
+                    <div className="text-primary" role="status">
+                        <span>Loading Histories</span>
+                    </div>
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </div> :
+                <ul>
+                    { histories.map((history, index) => <li key={index}>{history.query}</li>) }
+                </ul>
+
         );
     }
 }
