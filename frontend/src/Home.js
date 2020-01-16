@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
+
 import { withRouter, Redirect } from 'react-router-dom'
+import axios from 'axios'
+
 import Result from './Result/Result'
 import Input from './Input/Input'
 
@@ -47,14 +50,11 @@ class Home extends Component {
         showResult: true,
         searchInput: word
       }, () => {
-        fetch(defUrl)
-          .then((response) => {
-            return response.json();
-          })
-          .then((data) => {
+        axios.get(defUrl)
+          .then((res) => {
             let newDefinitions, newSuggestions
             try {
-              newDefinitions = data.map((def) => ({
+              newDefinitions = res.data.map((def) => ({
                 word: def.meta.id,
                 shortdef: def.shortdef,
                 fl: def.fl
@@ -63,7 +63,7 @@ class Home extends Component {
             } catch (error) {
               console.log(error)
               newDefinitions = []
-              newSuggestions = data
+              newSuggestions = res.data
             } finally {
               this.setState({
                 definitions: newDefinitions,
@@ -74,14 +74,11 @@ class Home extends Component {
           })
           .catch((error)=> console.log(error)) 
         
-        fetch(imgUrl)
-          .then((response) => {
-            return response.json();
-          })
-          .then((data) => {
+        axios.get(imgUrl)
+          .then((res) => {
             let newImages
             try {
-              newImages = data.items.map((image) => image.image.thumbnailLink)
+              newImages = res.data.items.map((image) => image.image.thumbnailLink)
             } catch (error) {
               console.log(error)
               newImages = []
