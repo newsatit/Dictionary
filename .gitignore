@@ -1,0 +1,7 @@
+**/__pycache__
+Pipfile
+Pipfile.lock
+
+.vscode
+backend/db.sqlite3
+frontend/yarn.lock

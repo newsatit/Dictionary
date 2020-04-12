@@ -72,7 +72,7 @@ class Home extends Component {
               })
             }
           })
-          .catch((error)=> console.log(error)) 
+          .catch((error) => console.log(error)) 
         
         axios.get(imgUrl)
           .then((res) => {
@@ -89,7 +89,12 @@ class Home extends Component {
               })
             }
           })
-          .catch((error)=> console.log(error)) 
+          .catch((error) => console.log(error)) 
+
+          axios.post('/api/histories/', {
+            query: word
+          })
+          .catch((error) => console.log(error))
       })
     }
   }
