@@ -4,6 +4,12 @@ This is a web application that can look up word definition and images related to
 
 It is implemented with React, Merriam-Webster Dictionary API, and Google Custom Search API (for images).
 
+This repo is not maintained anymore. I have seperated the repo into 2 different repos to include more features and backend (Django).
+
+[Frontent (React)](https://github.com/newsatit/image-dictionary-frontend)
+
+[Backend (Django)](https://github.com/newsatit/image-dictionary-backend)
+
 ## Run
 to run the application locally, run 
     
