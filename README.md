@@ -1,6 +1,6 @@
 # Image Dictionary
 
-This is a web application that can look up word definition and images related to that word at the same time. 
+This is a web application that can look up word definition and images related to that word at the same time. The web application can be found [here](https://image-dictionary.netlify.app/)
 
 It is implemented with React, Merriam-Webster Dictionary API, and Google Custom Search API (for images).
 
